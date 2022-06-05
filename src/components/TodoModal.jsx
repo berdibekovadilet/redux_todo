@@ -1,10 +1,10 @@
 import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { MdOutlineClose } from "react-icons/md";
 import { addTodo } from "../slices/todoSlice";
 import styles from "../styles/modules/modal.module.scss";
 import Button from "./Button";
 import { useDispatch } from "react-redux";
-import { v4 as uuid } from "uuid";
 import toast from "react-hot-toast";
 
 const TodoModal = ({ modalOpen, setModalOpen }) => {
@@ -17,10 +17,10 @@ const TodoModal = ({ modalOpen, setModalOpen }) => {
     if (title && status) {
       dispatch(
         addTodo({
-          id: uuid,
+          id: uuidv4(),
           title,
           status,
-          time: new Date().toLocaleDateString(),
+          time: new Date().toLocaleString(),
         })
       );
       toast.success("Task Added Successfully");
