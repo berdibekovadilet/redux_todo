@@ -2,6 +2,26 @@ import React from "react";
 import { useSelector } from "react-redux";
 import TodoItem from "./TodoItem";
 import styles from "../styles/modules/app.module.scss";
+import { AnimatePresence, motion } from "framer-motion";
+
+const container = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const child = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+};
 
 const AppContent = () => {
   const todoList = useSelector((state) => state.todo.todoList);
@@ -18,13 +38,22 @@ const AppContent = () => {
   });
 
   return (
-    <div className={styles.content__wrapper}>
-      {filteredTodoList && filteredTodoList.length > 0 ? (
-        filteredTodoList.map((todo) => <TodoItem todo={todo} key={todo.id} />)
-      ) : (
-        <p className={styles.emptyText}>No Todos</p>
-      )}
-    </div>
+    <motion.div
+      className={styles.content__wrapper}
+      variants={container}
+      initial="hidden"
+      animate="visible"
+    >
+      <AnimatePresence>
+        {filteredTodoList && filteredTodoList.length > 0 ? (
+          filteredTodoList.map((todo) => <TodoItem todo={todo} key={todo.id} />)
+        ) : (
+          <motion.p variants={child} className={styles.emptyText}>
+            No Todos
+          </motion.p>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 
