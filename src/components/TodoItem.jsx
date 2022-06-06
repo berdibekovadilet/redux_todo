@@ -1,31 +1,51 @@
 import { format } from "date-fns";
-import React, { useState } from "react";
-import styles from "../styles/modules/todoItem.module.scss";
-import { getClasses } from "../utils/getClasses";
+import toast from "react-hot-toast";
+import React, { useEffect, useState } from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import { deleteTodo } from "../slices/todoSlice";
-import toast from "react-hot-toast";
+import { deleteTodo, updateTodo } from "../slices/todoSlice";
+import styles from "../styles/modules/todoItem.module.scss";
+import { getClasses } from "../utils/getClasses";
 import TodoModal from "./TodoModal";
+import CheckButton from "./CheckButton";
 
 const TodoItem = ({ todo }) => {
   const dispatch = useDispatch();
-  const [updateModal, setUpdateModal] = useState(false);
+  const [checked, setChecked] = useState(false);
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
-  const handleDelete = (id) => {
+  useEffect(() => {
+    if (todo.status === "complete") {
+      setChecked(true);
+    } else {
+      setChecked(false);
+    }
+  }, [todo.status]);
+
+  const handleDelete = () => {
     dispatch(deleteTodo(todo.id));
     toast.success("Todo deleted successfully");
   };
 
-  const handleUpdate = (id) => {
-    setUpdateModal(true);
+  const handleUpdate = () => {
+    setUpdateModalOpen(true);
+  };
+
+  const handleCheck = () => {
+    setChecked(!checked);
+    dispatch(
+      updateTodo({
+        ...todo,
+        status: checked ? "incomplete" : "complete",
+      })
+    );
   };
 
   return (
     <>
       <div className={styles.item}>
         <div className={styles.todoDetails}>
-          []
+          <CheckButton checked={checked} handleCheck={handleCheck} />
           <div className={styles.texts}>
             <p
               className={getClasses([
@@ -43,8 +63,8 @@ const TodoItem = ({ todo }) => {
         <div className={styles.todoActions}>
           <div
             className={styles.icon}
-            onClick={handleDelete}
-            onKeyDown={handleDelete}
+            onClick={() => handleDelete()}
+            onKeyDown={() => handleDelete()}
             tabIndex={0}
             role="button"
           >
@@ -52,8 +72,8 @@ const TodoItem = ({ todo }) => {
           </div>
           <div
             className={styles.icon}
-            onClick={handleUpdate}
-            onKeyDown={handleUpdate}
+            onClick={() => handleUpdate()}
+            onKeyDown={() => handleUpdate()}
             tabIndex={0}
             role="button"
           >
@@ -63,9 +83,9 @@ const TodoItem = ({ todo }) => {
       </div>
       <TodoModal
         type="update"
+        modalOpen={updateModalOpen}
+        setModalOpen={setUpdateModalOpen}
         todo={todo}
-        modalOpen={updateModal}
-        setModalOpen={setUpdateModal}
       ></TodoModal>
     </>
   );

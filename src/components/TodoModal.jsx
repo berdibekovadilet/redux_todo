@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuid } from "uuid";
 import { MdOutlineClose } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 import { addTodo, updateTodo } from "../slices/todoSlice";
 import styles from "../styles/modules/modal.module.scss";
 import Button from "./Button";
-import { useDispatch } from "react-redux";
-import toast from "react-hot-toast";
 
-const TodoModal = ({ type, modalOpen, setModalOpen, todo }) => {
+function TodoModal({ type, modalOpen, setModalOpen, todo }) {
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [status, setStatus] = useState("incomplete");
 
   useEffect(() => {
-    if (type === 'update' && todo) {
+    if (type === "update" && todo) {
       setTitle(todo.title);
       setStatus(todo.status);
     } else {
-      setTitle('');
-      setStatus('incomplete');
+      setTitle("");
+      setStatus("incomplete");
     }
   }, [type, todo, modalOpen]);
 
@@ -33,30 +33,24 @@ const TodoModal = ({ type, modalOpen, setModalOpen, todo }) => {
       if (type === "add") {
         dispatch(
           addTodo({
-            id: uuidv4(),
+            id: uuid(),
             title,
             status,
             time: new Date().toLocaleString(),
           })
         );
         toast.success("Task Added Successfully");
-        setModalOpen(false);
       }
       if (type === "update") {
         if (todo.title !== title || todo.status !== status) {
-          dispatch(
-            updateTodo({
-              ...todo,
-              title,
-              status,
-            })
-          );
+          dispatch(updateTodo({ ...todo, title, status }));
+          toast.success("Task Updated successfully");
         } else {
-          toast.error("No changes were made");
+          toast.error("No changes made");
+          return;
         }
       }
-    } else {
-      toast.error("Title shouldn't be empty");
+      setModalOpen(false);
     }
   };
 
@@ -82,6 +76,7 @@ const TodoModal = ({ type, modalOpen, setModalOpen, todo }) => {
               <input
                 type="text"
                 id="title"
+                value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
             </label>
@@ -90,6 +85,7 @@ const TodoModal = ({ type, modalOpen, setModalOpen, todo }) => {
               <select
                 name="status"
                 id="status"
+                value={status}
                 onChange={(e) => setStatus(e.target.value)}
               >
                 <option value="incomplete">Incomplete</option>
@@ -113,6 +109,6 @@ const TodoModal = ({ type, modalOpen, setModalOpen, todo }) => {
       </div>
     )
   );
-};
+}
 
 export default TodoModal;

@@ -32,7 +32,7 @@ export const todoSlice = createSlice({
       }
     },
     updateTodo: (state, action) => {
-      const todoList = window.localStorage.getItem("todoList");
+      const todoList = window.localStorage.getItem('todoList');
       if (todoList) {
         const todoListArr = JSON.parse(todoList);
         todoListArr.forEach((todo) => {
@@ -41,7 +41,7 @@ export const todoSlice = createSlice({
             todo.title = action.payload.title;
           }
         });
-        window.localStorage.setItem("todoList", JSON.stringify(todoListArr));
+        window.localStorage.setItem('todoList', JSON.stringify(todoListArr));
         state.todoList = [...todoListArr];
       }
     },
