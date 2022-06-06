@@ -1,5 +1,7 @@
 # React Todo App using React, Redux, Framer Motion
-[!cover]/1.jpg
+![cover](cover/1.jpg)
+![cover2](cover/2.jpg)
+![cover3](cover/3.jpg)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
