@@ -1,4 +1,5 @@
-# Getting Started with Create React App
+# React Todo App using React, Redux, Framer Motion
+[!cover]/1.jpg
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
