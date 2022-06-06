@@ -1,5 +1,6 @@
 # React Todo App using React, Redux, Framer Motion
-# Live https://berdibekovadilet-todo.netlify.app/
+# Live
+https://berdibekovadilet-todo.netlify.app/
 
 ![cover](cover/1.jpg)
 ![cover2](cover/2.jpg)
