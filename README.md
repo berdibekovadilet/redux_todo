@@ -2,7 +2,7 @@
 # Live
 https://berdibekovadilet-todo.netlify.app/
 
-# Cover
+# Covers
 ![cover](cover/1.jpg)
 ![cover2](cover/2.jpg)
 ![cover3](cover/3.jpg)
